@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
 
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
@@ -14,29 +12,24 @@ import pandas as pd
 import numpy as np
 
 
-# In[2]:
-
 
 nltk.download('vader_lexicon')
 nltk.download('stopwords')
 
+with open('client_id', 'r') as f:
+    client_ID = f.read()
 
-# In[3]:
+with open('client_secret', 'r') as f:
+    client_Secret = f.read()
 
-
-reddit = praw.Reddit(client_id='*********',
-                    client_secret='******************',
-                    user_agent='Quick-Sherbet-1373')
-
-
-# In[4]:
+reddit = praw.Reddit(client_id=client_ID,
+                    client_secret=client_Secret,
+                    user_agent='Windows:Quick_Sentiment_Check:v.0.01:by_/u/robinarthur')
 
 
 sub_reddits = reddit.subreddit('wallstreetbets')
-stocks = ["SPCE", "LULU", "CCL", "SDC"]
+stocks = ["GME"]
 
-
-# In[5]:
 
 
 def commentSentiment(ticker, urlT):
@@ -82,8 +75,6 @@ def commentSentiment(ticker, urlT):
     return(averageScore)
 
 
-# In[6]:
-
 
 def latestComment(ticker, urlT):
     subComments = []
@@ -104,14 +95,9 @@ def latestComment(ticker, urlT):
     return(updateDates[-1])
 
 
-# In[7]:
-
-
 def get_date(date):
     return dt.datetime.fromtimestamp(date)
 
-
-# In[8]:
 
 
 submission_statistics = []
@@ -148,16 +134,7 @@ dfSentimentStocks.sort_values("latest_comment_date", axis = 0, ascending = True,
 dfSentimentStocks
 
 
-# In[9]:
-
-
 dfSentimentStocks.author.value_counts()
 
 
-# In[10]:
-
-
-dfSentimentStocks.to_csv('Reddit_Sentiment_Equity.csv', index=False) 
-
-
-# In[ ]:
+dfSentimentStocks.to_csv('Reddit_Sentiment_Equity.csv', index=False)
